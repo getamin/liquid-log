@@ -33,7 +33,7 @@
     Number dtos[] = (Number[])request.getAttribute(Constants.PerformedActions.GET_DT_OBJECT_ACTIONS);
     Number search[] = (Number[])request.getAttribute(Constants.PerformedActions.SEARCH_ACTIONS);
     Number actionsSumm[] = (Number[])request.getAttribute(Constants.PerformedActions.ACTIONS_COUNT);
-    
+    Number catalogActions[] = (Number[])request.getAttribute(Constants.PerformedActions.CATALOG_ACTION);
     
   //Prepare links
   	String path="";
@@ -98,6 +98,7 @@
         <thead class="thead-inverse">
             <th class="col-xs-4">Time</th>
             <th class="col-xs-1">Summ</th>
+	    <th class="col-xs-1">Catalogs</th>
             <th class="col-xs-1">Addobject</th>
             <th class="col-xs-1">EditObject</th>
             <th class="col-xs-1">GetList</th>
@@ -114,6 +115,9 @@
                     </td>
                     <td class="col-xs-1">
                         <%= actionsSumm[i].intValue() %>
+                    </td>
+		    <td class="col-xs-1">
+                      <%= catalogActions[i].intValue() %>
                     </td>
                     <td class="col-xs-1" >
                         <%= add[i].intValue() %>
@@ -153,6 +157,7 @@ var form = [];
 var dtos = [];
 var search = [];
 var summ = [];
+var actcat = [];
 
 <% for(int i=0;i<times.length;i++) {%>
     times.push((<%=times[i]%>));
@@ -164,7 +169,7 @@ var summ = [];
     dtos.push([new Date(<%= times[i] %>), <%= dtos[i].intValue() %>]);
     search.push([new Date(<%= times[i] %>), <%= search[i].intValue() %>]);
     summ.push([new Date(<%= times[i] %>), <%= actionsSumm[i].intValue() %>]);
-
+    actcat.push([new Date(<%= times[i] %>), <%= catalogActions[i].intValue() %>]);
 <% } %>
 
 document.getElementById('date_range').innerHTML += 'From: '+new Date(times[<%=times.length%>-1])+'<br/>To:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +new Date(times[0])
@@ -193,6 +198,9 @@ if(localStorage.getItem('searchActions')==null){
 if(localStorage.getItem('summary')==null){
     localStorage.setItem('summary', 'true');
 }
+if(localStorage.getItem('catalogActions')==null){
+    localStorage.setItem('catalogActions', 'true');
+}
 
 var addVisible = localStorage.getItem('addActions')==='true';
 var editVisible = localStorage.getItem('editActions')==='true';
@@ -202,7 +210,7 @@ var	formVisible = localStorage.getItem('formActions')==='true';
 var dtosVisible = localStorage.getItem('dtObjectActions')==='true';
 var searchVisible = localStorage.getItem('searchActions')==='true';
 var summVisible = localStorage.getItem('summary')==='true';
-
+var catalogActionsVisible = localStorage.getItem('catalogActions')==='true';
 Highcharts.setOptions({
 	global: {
 		useUTC: false
@@ -282,6 +290,9 @@ var myChart = Highcharts.chart('actions-chart-container', {
                         if(event.target.index==7){
                             localStorage.setItem('summary', !series[7].visible);
                         }
+			if(event.target.index==8){
+                            localStorage.setItem('catalogActions', !series[8].visible);
+                        }
                     }
                 }
             }
@@ -327,7 +338,12 @@ var myChart = Highcharts.chart('actions-chart-container', {
             data: summ,
             visible: summVisible,
             turboThreshold: 10000
-        }]
+        }, {
+            name: 'CatalogActions',
+            data: catalogActions,
+            visible: catalogActionsVisible,
+            turboThreshold: 10000
+             }]
 });
 
 </script>

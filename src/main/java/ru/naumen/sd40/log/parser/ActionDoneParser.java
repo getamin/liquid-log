@@ -42,6 +42,8 @@ public class ActionDoneParser
     private int getDtObjectActions = 0;
 
     private int searchActions = 0;
+    
+    private int catalogsAction = 0;
 
     boolean nan = true;
 
@@ -154,7 +156,7 @@ public class ActionDoneParser
     {
         return stddev;
     }
-
+    public int getCatalogsAction() { return catalogsAction; }
     public ArrayList<Integer> getTimes()
     {
         return times;
@@ -203,6 +205,10 @@ public class ActionDoneParser
             else if (actionInLowerCase.matches("(?i)^([a-zA-Z]+|Get)[a-zA-Z]+DtObject[a-zA-Z]+"))
             {
                 getDtObjectActions++;
+            }
+	    else if (actionInLowerCase.equals("getcatalogsaction"))
+            {
+                 catalogsAction++;
             }
             else if (actionInLowerCase.matches("(?i)[a-zA-Z]+search[a-zA-Z]+"))
             {
